@@ -1,3 +1,4 @@
+include ':fragment'
 include ':viewmodel'
 include ':lifecycle'
 include ':datastore'
