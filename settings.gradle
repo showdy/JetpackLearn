@@ -1,3 +1,5 @@
+include ':floatingwindow'
+include ':alarmclock'
 include ':fragment'
 include ':viewmodel'
 include ':lifecycle'

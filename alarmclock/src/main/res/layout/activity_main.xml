@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/auth_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="22dp"
+        android:gravity="center_horizontal">
+        <View
+            android:id="@+id/view1"
+            android:layout_width="20dp"
+            android:layout_height="6dp"
+            android:background="@drawable/vm_selected_shape" />
+        <View
+            android:id="@+id/view2"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/vm_unselected_shape" />
+        <View
+            android:layout_marginStart="5dp"
+            android:id="@+id/view3"
+            android:layout_width="20dp"
+            android:layout_height="6dp"
+            android:visibility="gone"
+            android:background="@drawable/vm_selected_shape" />
+    </LinearLayout>
+</RelativeLayout>
