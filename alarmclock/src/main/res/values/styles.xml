@@ -8,7 +8,7 @@
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">@mipmap/gyenno_splash</item>
     </style>
 
 </resources>

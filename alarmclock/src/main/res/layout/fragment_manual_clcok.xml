@@ -10,32 +10,31 @@
     tools:deviceIds="wear">
 
     <RelativeLayout
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/inner_frame_layout_padding">
 
         <TextView
-            android:textSize="18sp"
             android:id="@+id/lastClock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:text="上次服药18:30"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            tools:text="上次服药18:30" />
 
 
         <TextView
             android:id="@+id/medClock"
-            android:layout_width="250dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lastClock"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:background="@drawable/report_shape"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="8dp"
             android:text="服药打卡"
             android:textColor="@color/white" />
 

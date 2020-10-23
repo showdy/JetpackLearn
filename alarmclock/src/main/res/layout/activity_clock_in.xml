@@ -1,100 +1,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:padding="10dp">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/medd_time"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:padding="10dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="吃药时间"
+            android:textColor="@color/white" />
 
-            <TextView
-                android:id="@+id/medd_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:text="吃药时间"
-                android:textColor="@android:color/white" />
-
-            <FrameLayout
-                android:id="@+id/timepicker"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/medd_time"
-                android:layout_centerInParent="true"
-                android:layout_margin="25dp"
-                android:timePickerMode="clock" />
-        </RelativeLayout>
-
-        <!--        <View-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="1dp"-->
-        <!--            android:background="@color/white" />-->
-
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:layout_weight="1">-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/cancel"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:layout_marginTop="20dp"-->
-        <!--                android:layout_marginRight="20dp"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="right|top"-->
-        <!--                android:text="取消" />-->
-
-        <!--            <View-->
-        <!--                android:layout_width="1dp"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:background="@color/white" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/sure"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="match_parent"-->
-        <!--                android:layout_centerHorizontal="true"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="20dp"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="start|top"-->
-        <!--                android:text="确认" />-->
-        <!--        </LinearLayout>-->
-
-
-        <!--        <TextView-->
-        <!--            android:gravity="center"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:text="确定打卡吗？"-->
-        <!--            android:textColor="@color/white" />-->
-        <!--        <Button-->
-        <!--            android:id="@+id/clock_cancel"-->
-        <!--            android:background="@drawable/report_shape"-->
-        <!--            android:layout_gravity="bottom|left"-->
-        <!--            android:layout_height="30dp"-->
-        <!--            android:layout_width="40dp"-->
-        <!--            android:text="取消" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/clock_positive"-->
-        <!--            android:background="@drawable/report_shape"-->
-        <!--            android:layout_gravity="bottom|right"-->
-        <!--            android:layout_height="30dp"-->
-        <!--            android:layout_width="40dp"-->
-        <!--            android:text="确定" />-->
-
-
-    </LinearLayout>
+        <FrameLayout
+            android:id="@+id/timepicker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/medd_time"
+            android:layout_centerInParent="true"
+            android:layout_margin="25dp"
+            android:timePickerMode="clock" />
+    </RelativeLayout>
 </LinearLayout>
     
