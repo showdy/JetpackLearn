@@ -20,6 +20,9 @@ class SensorFile(context: Context, private val fileName: String) : ReadOnlyPrope
         dirFile.setWritable(true)
     }
 
+    /**
+     * 经过测试，并不是半小时创建一份文件
+     */
     override fun getValue(thisRef: Any?, property: KProperty<*>): File {
         val currentTime = System.currentTimeMillis()
         val file: File = if (currentTime - createdTime < TIME_INTERVAL) {
@@ -35,5 +38,6 @@ class SensorFile(context: Context, private val fileName: String) : ReadOnlyPrope
 
     companion object {
         const val TIME_INTERVAL = 30 * 60 * 1000
+
     }
 }

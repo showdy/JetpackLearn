@@ -1,6 +1,5 @@
-package com.showdy.alarm.service
+package com.showdy.alarm.service.observer
 
-import android.content.Context
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.showdy.alarm.util.AlarmSetting
@@ -8,9 +7,9 @@ import com.showdy.alarm.util.AlarmSetting
 /**
  * Created by <b>Showdy</b> on 2020/10/16 15:08
  *
- *  打卡
+ *  设定闹钟定时打卡
  */
-class ClockObserver(private val context: Context) : DefaultLifecycleObserver {
+class ClockObserver : DefaultLifecycleObserver {
 
 
     override fun onCreate(owner: LifecycleOwner) {

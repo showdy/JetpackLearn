@@ -21,7 +21,7 @@ fun String.createFile(): File {
 
 private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-private val millFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS")
+private val millFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
 
 /**
  * 将当前时间格式化为yyyy-MM-dd HH:mm:ss

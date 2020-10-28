@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Vibrator
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.showdy.alarm.App
 import java.util.concurrent.atomic.AtomicInteger
 
 
@@ -116,11 +117,14 @@ fun Service.sendForegroundNotification(
 
 /**
  * 兼容android8.0以上，notification设置声音震动无效
+ *
+ * 为了兼容手表震动和声音设置次数不生效的问题，主动去注销声音和震动
  */
 fun Context.sound() {
-    val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+    val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
     val rt = RingtoneManager.getRingtone(this, uri)
     rt.play()
+    App.instance.handler.postDelayed({ rt.stop() }, 5000)
 }
 
 fun Context.vibrate() {
@@ -132,5 +136,6 @@ fun Context.vibrate() {
      *  1： 震动从数组为1下标重复震动
      *  2： 震动从数组为2下标重复震动
      */
-    vibrator.vibrate(vibrationPattern, -1)
+    vibrator.vibrate(vibrationPattern, 0)
+    App.instance.handler.postDelayed({ vibrator.cancel() }, 5000)
 }

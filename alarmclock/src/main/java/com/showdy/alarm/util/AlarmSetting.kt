@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import androidx.core.app.AlarmManagerCompat
 import com.showdy.alarm.App
+import com.orhanobut.logger.Logger
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -41,15 +42,19 @@ class AlarmSetting private constructor() {
      */
     fun setExactAlarm() {
         val calendar = findNextHalfHourCalendar()
-        Log.d("TAG", "alarm:${calendar.time.format()}")
+        Log.d("TAG", "AlarmSetting:${calendar.time.format()}")
         AlarmManagerCompat.setExactAndAllowWhileIdle(
             alarmManager,
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             pendingIntent
         )
+        Logger.t("Alarm").d(calendar.time.millFormat())
     }
 
+    /**
+     * 如果調用該方法，闹钟将无法停下来
+     */
     fun setIntervalExactAlarm() {
         AlarmManagerCompat.setExactAndAllowWhileIdle(
             alarmManager,
@@ -74,18 +79,22 @@ class AlarmSetting private constructor() {
                 calendar.set(Calendar.DAY_OF_YEAR, day + 1)
                 calendar.set(Calendar.HOUR_OF_DAY, 8)
                 calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
             }
-            hour <= 8 -> {
+            hour < 8 -> { //不能等于八点
                 calendar.set(Calendar.HOUR_OF_DAY, 8)
                 calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
             }
             minute in 0..29 -> {
                 calendar.set(Calendar.HOUR_OF_DAY, hour)
                 calendar.set(Calendar.MINUTE, 30)
+                calendar.set(Calendar.SECOND, 0)
             }
             minute in 30..59 -> {
                 calendar.set(Calendar.HOUR_OF_DAY, hour + 1)
                 calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
             }
         }
         return calendar

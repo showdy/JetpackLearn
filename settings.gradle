@@ -1,3 +1,5 @@
+include ':commonLib'
+include ':rxjava'
 include ':floatingwindow'
 include ':alarmclock'
 include ':fragment'

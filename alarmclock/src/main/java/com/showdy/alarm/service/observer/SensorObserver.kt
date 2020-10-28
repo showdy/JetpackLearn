@@ -1,10 +1,8 @@
-package com.showdy.alarm.service
+package com.showdy.alarm.service.observer
 
 import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
+import android.hardware.*
+import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
@@ -26,8 +24,7 @@ import kotlin.collections.ArrayList
  **
  * 传感器获取数据并保存到文件
  */
-@ExperimentalCoroutinesApi
-@ObsoleteCoroutinesApi
+@Deprecated(replaceWith = ReplaceWith("SensorAllObserver", "deprecated"), message = "deprecated")
 class SensorObserver(
     private val context: Context,
     private val scope: LifecycleCoroutineScope,
@@ -86,6 +83,7 @@ class SensorObserver(
     override fun onStart(owner: LifecycleOwner) {
         super.onStart(owner)
         //开始传感器数据采集
+        //设置采样频率和采样延迟
         sensorManager.registerListener(this, acceleratorSensor, SAMPLE_PERIOD)
         sensorManager.registerListener(this, lightSensor, SAMPLE_PERIOD)
         sensorManager.registerListener(this, heartRateSensor, SAMPLE_PERIOD)
@@ -96,13 +94,15 @@ class SensorObserver(
         startReadSensorResultCoroutines()
     }
 
+    @ExperimentalCoroutinesApi
+    @ObsoleteCoroutinesApi
     private fun startReadSensorResultCoroutines() {
         lightActor = scope.actor(capacity = Channel.UNLIMITED) {
             receiveAsFlow()
                 .buffer()
                 .flowOn(Dispatchers.IO)
                 .collectLatest {
-                    lightFile.appendText(it)
+                    lightFile.appendText("$it,\n")
                 }
         }
 
@@ -111,7 +111,7 @@ class SensorObserver(
                 .buffer()
                 .flowOn(Dispatchers.IO)
                 .collectLatest {
-                    stepFile.appendText(it)
+                    stepFile.appendText("$it,\n")
                 }
         }
 
@@ -120,7 +120,7 @@ class SensorObserver(
                 .buffer()
                 .flowOn(Dispatchers.IO)
                 .collectLatest {
-                    magneticFiledFile.appendText(it)
+                    magneticFiledFile.appendText("$it,\n")
                 }
         }
 
@@ -129,7 +129,7 @@ class SensorObserver(
                 .buffer()
                 .flowOn(Dispatchers.IO)
                 .collectLatest {
-                    acceleratorFile.appendText(it)
+                    acceleratorFile.appendText("$it,\n")
                 }
 
         }
@@ -139,7 +139,7 @@ class SensorObserver(
                 .buffer()
                 .flowOn(Dispatchers.IO)
                 .collectLatest {
-                    heartRateFile.appendText(it)
+                    heartRateFile.appendText("$it,\n")
                 }
         }
 
@@ -148,16 +148,22 @@ class SensorObserver(
                 .buffer()
                 .flowOn(Dispatchers.IO)
                 .collectLatest {
-                    gyroscopeFile.appendText(it)
+                    gyroscopeFile.appendText("$it,\n")
                 }
         }
     }
 
 
-
     override fun onDestroy(owner: LifecycleOwner) {
         //停止采集
         sensorManager.unregisterListener(this)
+
+        offerListBeforeDestroy(lightActor, lightList)
+        offerListBeforeDestroy(stepActor, stepList)
+        offerListBeforeDestroy(gyroscopeActor, gyoscopeList)
+        offerListBeforeDestroy(heartRateActor, heartRateList)
+        offerListBeforeDestroy(magneticActor, magneticList)
+        offerListBeforeDestroy(acceleratorActor, acceList)
         //关闭协程
         lightActor.close()
         stepActor.close()
@@ -168,22 +174,24 @@ class SensorObserver(
         super.onDestroy(owner)
     }
 
+
     override fun onSensorChanged(event: SensorEvent?) {
         event?.let {
             if (!checkValid(it.values)) {
                 return
             }
+            Log.d(TAG, "onSensorChanged: ${event.values.joinToString(",")}")
             when (event.sensor.type) {
                 Sensor.TYPE_LIGHT -> {
                     sendSensorResult(it, lightList, lightActor, FAST_LIST_SIZE)
                 }
                 Sensor.TYPE_MAGNETIC_FIELD -> {
                     sendSensorResult(it, magneticList, magneticActor, FAST_LIST_SIZE)
+
                 }
                 Sensor.TYPE_STEP_COUNTER -> {
                     sendSensorResult(it, stepList, stepActor, SLOW_LIST_SIZE)
                 }
-
                 Sensor.TYPE_HEART_RATE -> {
                     sendSensorResult(it, heartRateList, heartRateActor, SLOW_LIST_SIZE)
                 }
@@ -205,7 +213,7 @@ class SensorObserver(
         actor: SendChannel<String>,
         maxSize: Int
     ) {
-        list.add("${Date().millFormat()},${event.values.joinToString(",")}")
+        list.add("${Date().millFormat()},${event.values.joinToString(",")},${event.timestamp}")
         if (list.size == maxSize) {
             actor.offer(list.joinToString(",\n"))
             list.clear()
@@ -224,4 +232,12 @@ class SensorObserver(
         }
         return true
     }
+
+    //服务关闭时尽量写入文件
+    private fun offerListBeforeDestroy(actor: SendChannel<String>, list: ArrayList<String>) {
+        if (list.isNotEmpty()) {
+            actor.offer(list.joinToString(",\n"))
+        }
+    }
+
 }

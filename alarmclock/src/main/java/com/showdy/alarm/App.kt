@@ -1,15 +1,13 @@
 package com.showdy.alarm
 
 import android.app.Application
-import android.content.BroadcastReceiver
-import android.content.Intent
-import android.content.IntentFilter
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.showdy.alarm.receiver.ClockBroadcastReceiver
 import com.showdy.alarm.service.WatchService
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
+import com.showdy.alarm.util.log.CustomCSVFormatStrategy
+import com.orhanobut.logger.*
 import kotlin.properties.Delegates
 
 /**
@@ -17,9 +15,8 @@ import kotlin.properties.Delegates
  *
  *  由于TicWatchPro是Android-9 ，需要适配版本
  *
+ *  服务和广播的启动和注册是想尽量保证传感器服务存活时间够长，获取更多的数据
  */
-@ObsoleteCoroutinesApi
-@ExperimentalCoroutinesApi
 class App : Application() {
 
     companion object {
@@ -29,26 +26,33 @@ class App : Application() {
             get() = AppObserver.activityCount > 0
     }
 
-    private val serviceIntent: Intent by lazy { Intent(this, WatchService::class.java) }
-
-    private val receiver: BroadcastReceiver by lazy { ClockBroadcastReceiver() }
+    val handler: Handler by lazy { Handler(Looper.getMainLooper()) }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-
         //绑定生命周期
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppObserver())
 
-        //启动前台服务
-        WatchService.startService(this, serviceIntent)
+        //注册服务和广播
+        registerServiceAndReceiver()
 
-        //注册广播
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-            receiver,
-            IntentFilter("com.gyenno.watch.clock")
-        )
+        //初始化Logger
+        initLogger()
+
     }
 
+    private fun initLogger() {
+        val formatStrategy = CustomCSVFormatStrategy.newBuilder()
+            .build()
+        Logger.addLogAdapter(DiskLogAdapter(formatStrategy))
+    }
+
+    private fun registerServiceAndReceiver() {
+        //启动前台服务
+        WatchService.startService()
+        //注册广播
+        ClockBroadcastReceiver.registerClockReceiver()
+    }
 
 }

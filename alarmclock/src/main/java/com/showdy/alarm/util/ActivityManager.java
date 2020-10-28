@@ -1,8 +1,6 @@
 package com.showdy.alarm.util;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
@@ -32,7 +30,6 @@ public class ActivityManager {
 
     /**
      * 入栈
-     *
      * @param activity activity实例
      */
     public void addActivity(Activity activity) {
@@ -44,7 +41,6 @@ public class ActivityManager {
 
     /**
      * 出栈
-     *
      * @param activity
      */
     public void removeActivity(Activity activity) {
@@ -70,7 +66,6 @@ public class ActivityManager {
 
     /**
      * 获取当前Activity
-     *
      * @return 当前（栈顶）activity
      */
     public Activity currentActivity() {
@@ -83,7 +78,6 @@ public class ActivityManager {
 
     /**
      * 结束除当前activtiy以外的所有activity
-     *
      * @param activtiy 不需要结束的activity
      */
     public void finishOtherActivity(Activity activtiy) {
@@ -107,7 +101,6 @@ public class ActivityManager {
 
     /**
      * 结束除指定activtiy以外的所有activity
-     *
      * @param cls 指定的某类activity
      */
     public void finishOtherActivity(Class<?> cls) {
@@ -141,7 +134,6 @@ public class ActivityManager {
 
     /**
      * 结束指定的Activity
-     *
      * @param activity 指定的activity实例
      */
     public void finishActivity(Activity activity) {
@@ -164,7 +156,6 @@ public class ActivityManager {
 
     /**
      * 结束指定类名的所有Activity
-     *
      * @param cls 指定的类的class
      */
     public void finishActivity(Class<?> cls) {
@@ -214,10 +205,4 @@ public class ActivityManager {
         }
     }
 
-    public void restartApp(Context context) {
-        Intent launchIntent = context.getPackageManager().
-                getLaunchIntentForPackage(context.getApplicationContext().getPackageName());
-        launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(launchIntent);
-    }
 }

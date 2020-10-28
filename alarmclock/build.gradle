@@ -7,7 +7,7 @@ android {
     compileSdkVersion build_versions.compile_sdk
     buildToolsVersion build_versions.build_tools
     defaultConfig {
-        applicationId "com.showdy.alarmclock"
+        applicationId "com.showdy.alarm"
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
         versionCode 1
@@ -60,6 +60,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.iqiyi.xcrash:xcrash-android-lib:2.4.9'
 
+    implementation "io.reactivex.rxjava2:rxjava:2.2.20"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData
@@ -90,6 +93,7 @@ dependencies {
     implementation "androidx.datastore:datastore-preferences:1.0.0-alpha01"
     // Kotlin
     implementation "androidx.preference:preference-ktx:1.1.1"
+    implementation 'com.orhanobut:logger:2.2.0'
 
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
     implementation 'com.hjq:xxpermissions:8.8'
